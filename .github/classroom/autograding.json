@@ -1,0 +1,44 @@
+{
+  "tests": [
+    {
+      "name": "TestGeneration simpleTest.csv",
+      "setup": "javac TestGeneration.java",
+      "run": "java TestGeneration",
+      "input": "simpleTest.csv",
+      "output": ".*\\(.*\\).*(\\r|\\n|\\r\\n)+(.*(\\r|\\n|\\r\\n))+.*[Tt]op [Tt]en [Ff]itness [Vv]alues: ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9]",
+      "comparison": "regex",
+      "timeout": 1,
+      "points": 1
+    },
+    {
+      "name": "testGeneration winequality-red.csv",
+      "setup": "javac TestGeneration.java",
+      "run": "java TestGeneration",
+      "input": "winequality-red.csv",
+      "output": ".*\\(.*\\).*(\\r|\\n|\\r\\n)+(.*(\\r|\\n|\\r\\n))+.*[Tt]op [Tt]en [Ff]itness [Vv]alues: ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9], ?[0-9]+[.][0-9][0-9]",
+      "comparison": "regex",
+      "timeout": 1,
+      "points": 1
+    },
+    {
+      "name": "TestGP simpleTest.csv",
+      "setup": "javac TestGP.java",
+      "run": "java TestGP",
+      "input": "simpleTest.csv",
+      "output": "Generation 1:.*(\\r|\\n|\\r\\n)+(.*(\\r|\\n|\\r\\n))+.*Generation 50:",
+      "comparison": "regex",
+      "timeout": 2,
+      "points": 1
+    },
+    {
+      "name": "TestGP winequality-red.csv",
+      "setup": "javac TestGP.java",
+      "run": "java TestGP",
+      "input": "winequality-red.csv",
+      "output": "Generation 1:.*(\\r|\\n|\\r\\n)+(.*(\\r|\\n|\\r\\n))+.*Generation 50:",
+      "comparison": "regex",
+      "timeout": 2,
+      "points": 1
+    }
+  ]
+}
