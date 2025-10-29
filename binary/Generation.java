@@ -15,7 +15,7 @@ public class Generation {
         this.size = size;
         dataSet = new DataSet(fileName);
         Binop[] ops = { new Plus(), new Minus(), new Mult(), new Divide() };
-        int numIndepVars = dataSet.getNumInputs();
+        int numIndepVars = dataSet.getNumIndependentVariables();
         factory = new NodeFactory(ops, numIndepVars);
         rand = new Random();
         trees = new GPTree[size];

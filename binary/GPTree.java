@@ -1,8 +1,7 @@
 package binary;
 
-import java.util.ArrayList;
-import java.util.Random;
 import tabular.*;
+import java.util.*;
 
 public class GPTree implements Collector, Comparable<GPTree>, Cloneable {
     private Node root;
@@ -12,12 +11,10 @@ public class GPTree implements Collector, Comparable<GPTree>, Cloneable {
     public GPTree(NodeFactory n, int maxDepth, Random rand) {
         root = n.getOperator(rand);
         root.addRandomKids(n, maxDepth, rand);
-        fitness = Double.MAX_VALUE;
     }
 
     GPTree() {
         root = null;
-        fitness = Double.MAX_VALUE;
     }
 
     /**
@@ -84,7 +81,7 @@ public class GPTree implements Collector, Comparable<GPTree>, Cloneable {
         boolean left = rand.nextBoolean();
         // get the connection points
         Node thisTrunk = crossNodes.get(thisPoint);
-        Node treeTrunk = crossNodes.get(treePoint);
+        Node treeTrunk = tree.crossNodes.get(treePoint);
 
 
         if(left) {
@@ -106,49 +103,64 @@ public class GPTree implements Collector, Comparable<GPTree>, Cloneable {
         return root.eval(data);
     }
 
-    // ---------------------- HW8 additions below ----------------------
+
+
+    // ===================== ADDED FOR CHECKPOINT 1 =====================
+
 
     /**
-     * Evaluate fitness of this tree using sum of squared error.
+     * Evaluates fitness over all rows of a DataSet.
      */
     public void evalFitness(DataSet dataSet) {
-        double total = 0.0;
+        double sum = 0.0;
         for (DataRow row : dataSet.getRows()) {
-            double predicted = eval(row.getX());
-            double actual = row.getY();
+            double predicted = eval(row.getIndependentVariables());
+            double actual = row.getDependentVariable();
             double diff = predicted - actual;
-            total += diff * diff;
+            sum += diff * diff;
         }
-        fitness = total;
+        fitness = sum;
     }
 
+    /**
+     * Returns the most recently computed fitness value.
+     */
     public double getFitness() {
         return fitness;
     }
 
+    /**
+     * Compares GPTrees by fitness value.
+     */
     @Override
-    public int compareTo(GPTree other) {
-        return Double.compare(this.fitness, other.fitness);
+    public int compareTo(GPTree t) {
+        if (this.fitness < t.fitness) return -1;
+        if (this.fitness > t.fitness) return 1;
+        return 0;
     }
 
+    /**
+     * Equality is defined as equal fitness.
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof GPTree)) return false;
-        GPTree other = (GPTree) obj;
-        return this.compareTo(other) == 0;
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        if (!(o instanceof GPTree)) return false;
+        GPTree t = (GPTree) o;
+        return this.compareTo(t) == 0;
     }
 
+    /**
+     * Deep clone of the GPTree.
+     */
     @Override
     public Object clone() {
-        GPTree copy = null;
         try {
-            copy = (GPTree) super.clone();
+            GPTree copy = (GPTree) super.clone();
+            copy.root = (Node) root.clone();
+            return copy;
         } catch (CloneNotSupportedException e) {
-            System.out.println("GPTree can't clone.");
+            throw new AssertionError(e);
         }
-        if (this.root != null) {
-            copy.root = (Node) this.root.clone();
-        }
-        return copy;
     }
 }
